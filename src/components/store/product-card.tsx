@@ -25,6 +25,7 @@ export function ProductCard({
   );
 
   const openDetail = () => onOpenDetail?.(product);
+  const available = product.availableQuantity;
 
   if (layout === "list") {
     return (
@@ -53,6 +54,11 @@ export function ProductCard({
             <p className="text-[11px] text-[var(--store-text-soft)]">
               Ver detalle
             </p>
+            {typeof available === "number" ? (
+              <p className="text-[10px] font-medium text-[var(--store-text-soft)]">
+                {available > 0 ? `${available} disponibles` : "Sin stock"}
+              </p>
+            ) : null}
           </div>
         </button>
         <div className="flex shrink-0 items-center border-l border-[var(--store-border-subtle)] p-3">
@@ -93,6 +99,11 @@ export function ProductCard({
             <p className="text-[10px] font-medium uppercase tracking-wider text-[var(--store-text-soft)]">
               Ver detalle
             </p>
+            {typeof available === "number" ? (
+              <p className="text-[10px] font-medium text-[var(--store-text-soft)]">
+                {available > 0 ? `${available} disponibles` : "Sin stock"}
+              </p>
+            ) : null}
           </div>
         </div>
       </button>

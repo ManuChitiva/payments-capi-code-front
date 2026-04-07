@@ -49,6 +49,7 @@ export function ProductDetailModal({
     locale,
   );
   const refLabel = product.ref ?? `REF-${product.id}`;
+  const available = product.availableQuantity;
 
   return (
     <div
@@ -108,6 +109,13 @@ export function ProductDetailModal({
               <p className="font-display text-2xl tabular-nums text-[var(--store-primary)] sm:text-3xl">
                 {price}
               </p>
+              {typeof available === "number" ? (
+                <p className="text-xs font-medium uppercase tracking-[0.12em] text-[var(--store-text-soft)]">
+                  {available > 0
+                    ? `Disponibles: ${available}`
+                    : "Sin unidades disponibles"}
+                </p>
+              ) : null}
               <p className="text-sm leading-relaxed text-[var(--store-text-soft)]">
                 {product.description?.trim() || DEFAULT_COPY}
               </p>

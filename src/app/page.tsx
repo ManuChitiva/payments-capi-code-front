@@ -1,11 +1,13 @@
 import { CatalogSection } from "@/components/store/catalog-section";
 import { StoreNavbar } from "@/components/store/navbar";
 import { StoreSidebar } from "@/components/store/store-sidebar";
-import { defaultStoreConfig } from "@/config/store-defaults";
+import { getStoreConfigFromApi } from "@/lib/store-api";
 import { themeToStyle } from "@/lib/store-types";
 
-export default function Home() {
-  const store = defaultStoreConfig;
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const store = await getStoreConfigFromApi();
 
   return (
     <div
@@ -18,7 +20,7 @@ export default function Home() {
         className="w-full min-w-0 flex-1 px-4 py-8 sm:px-6 sm:py-10 lg:px-8 xl:px-10 2xl:px-14"
       >
         <div className="lg:grid lg:grid-cols-[minmax(0,19rem)_minmax(0,1fr)] lg:items-start lg:gap-8 xl:gap-12">
-          <aside className="order-2 mt-12 space-y-5 lg:order-1 lg:mt-0 lg:sticky lg:top-[5.25rem] lg:self-start">
+          <aside className="order-2 mt-12 mb-10 space-y-5 lg:order-1 lg:mt-0 lg:mb-0 lg:sticky lg:top-[5.25rem] lg:self-start">
             <StoreSidebar contact={store.contact} pickup={store.pickup} />
           </aside>
           <div className="order-1 min-w-0">

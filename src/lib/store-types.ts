@@ -33,6 +33,8 @@ export type StoreProduct = {
   imageAlt: string;
   price: number;
   currencySymbol: string;
+  /** Cantidad disponible en inventario */
+  availableQuantity?: number;
   /** SKU o referencia para mostrar en ficha / modal */
   ref?: string;
   /** Descripción larga (modal o futura página de detalle) */
