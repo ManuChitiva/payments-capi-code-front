@@ -23,6 +23,7 @@ export default function Home() {
           </aside>
           <div className="order-1 min-w-0">
             <CatalogSection
+              eyebrow={store.catalog.eyebrow}
               headline={store.catalog.headline}
               subline={store.catalog.subline}
               sortLabel={store.catalog.sortLabel}

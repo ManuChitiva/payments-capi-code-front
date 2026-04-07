@@ -7,10 +7,12 @@ import {
   IconList,
   IconSearch,
 } from "@/components/store/icons";
+import { ProductDetailModal } from "@/components/store/product-detail-modal";
 import { ProductCard } from "@/components/store/product-card";
 import type { StoreProduct, StoreSortOption } from "@/lib/store-types";
 
 export type CatalogSectionProps = {
+  eyebrow?: string;
   headline?: string;
   subline?: string;
   sortLabel: string;
@@ -19,7 +21,8 @@ export type CatalogSectionProps = {
 };
 
 export function CatalogSection({
-  headline = "Catálogo",
+  eyebrow = "Tienda online",
+  headline = "Productos",
   subline,
   sortLabel,
   sortOptions,
@@ -28,6 +31,7 @@ export function CatalogSection({
   const [query, setQuery] = useState("");
   const [sortId, setSortId] = useState(sortOptions[0]?.id ?? "relevant");
   const [view, setView] = useState<"grid" | "list">("grid");
+  const [detailProduct, setDetailProduct] = useState<StoreProduct | null>(null);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -52,7 +56,7 @@ export function CatalogSection({
     <div className="min-w-0 space-y-8">
       <header className="space-y-3 border-b border-[var(--store-border-subtle)] pb-8">
         <p className="text-[11px] font-semibold uppercase tracking-[0.32em] text-[var(--store-primary)]">
-          Catálogo
+          {eyebrow}
         </p>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-2xl space-y-2">
@@ -145,7 +149,12 @@ export function CatalogSection({
         }
       >
         {sorted.map((product) => (
-          <ProductCard key={product.id} product={product} layout={view} />
+          <ProductCard
+            key={product.id}
+            product={product}
+            layout={view}
+            onOpenDetail={setDetailProduct}
+          />
         ))}
       </div>
 
@@ -159,6 +168,11 @@ export function CatalogSection({
           </p>
         </div>
       ) : null}
+
+      <ProductDetailModal
+        product={detailProduct}
+        onClose={() => setDetailProduct(null)}
+      />
     </div>
   );
 }

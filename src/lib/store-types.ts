@@ -33,6 +33,10 @@ export type StoreProduct = {
   imageAlt: string;
   price: number;
   currencySymbol: string;
+  /** SKU o referencia para mostrar en ficha / modal */
+  ref?: string;
+  /** Descripción larga (modal o futura página de detalle) */
+  description?: string;
 };
 
 export type StoreSortOption = {
@@ -70,6 +74,8 @@ export type StoreConfig = {
     sortLabel: string;
     sortOptions: StoreSortOption[];
     products: StoreProduct[];
+    /** Etiqueta pequeña sobre el título (ej. “Tienda online”) */
+    eyebrow?: string;
     /** Título principal del bloque de catálogo */
     headline?: string;
     /** Texto de apoyo bajo el título */

@@ -9,13 +9,7 @@ export const defaultStoreConfig: StoreConfig = {
     logoUrl: null,
     homeHref: "/",
   },
-  navLinks: [
-    { label: "Inicio", href: "/" },
-    { label: "Servicios", href: "#servicios" },
-    { label: "Reservar", href: "#reservar" },
-    { label: "Productos", href: "#productos" },
-    { label: "Contacto", href: "#contacto" },
-  ],
+  navLinks: [],
   contact: {
     title: "Entra en contacto",
     lines: [
@@ -49,9 +43,10 @@ export const defaultStoreConfig: StoreConfig = {
     ],
   },
   catalog: {
-    headline: "Colección",
+    eyebrow: "Tienda online",
+    headline: "Todo lo que buscas, en un solo lugar",
     subline:
-      "Repuestos y accesorios seleccionados. Consulta disponibilidad, envío y puntos de recogida.",
+      "Navega por nuestros productos, compara y elige con calma. Compra de forma rápida y segura; estamos aquí para ayudarte cuando lo necesites.",
     sortLabel: "Más relevante",
     sortOptions: [
       { id: "relevant", label: "Más relevante" },
@@ -66,6 +61,9 @@ export const defaultStoreConfig: StoreConfig = {
         imageAlt: "Neumático touring",
         price: 289000,
         currencySymbol: "$",
+        ref: "SKU-TYR-195651591H",
+        description:
+          "Neumático touring para uso urbano y carretera. Buen equilibrio entre confort, duración y consumo. Verifica compatibilidad con tu vehículo antes de comprar.",
       },
       {
         id: "2",
@@ -77,7 +75,7 @@ export const defaultStoreConfig: StoreConfig = {
       },
       {
         id: "3",
-        title: "Llanta de aleación 16\" 5×114.3 grafito",
+        title: 'Llanta de aleación 16" 5×114.3 grafito',
         imageSrc: "https://picsum.photos/seed/rs-p3/400/400",
         imageAlt: "Llanta de aleación",
         price: 512000,
@@ -85,7 +83,7 @@ export const defaultStoreConfig: StoreConfig = {
       },
       {
         id: "4",
-        title: "Llanta de acero 15\" con tapón",
+        title: 'Llanta de acero 15" con tapón',
         imageSrc: "https://picsum.photos/seed/rs-p4/400/400",
         imageAlt: "Llanta de acero",
         price: 198000,
@@ -165,7 +163,7 @@ export const defaultStoreConfig: StoreConfig = {
       },
       {
         id: "14",
-        title: "Escobillas limpiaparabrisas 24\" / 18\"",
+        title: 'Escobillas limpiaparabrisas 24" / 18"',
         imageSrc: "https://picsum.photos/seed/rs-p14/400/400",
         imageAlt: "Escobillas limpiaparabrisas",
         price: 38900,
@@ -245,7 +243,7 @@ export const defaultStoreConfig: StoreConfig = {
       },
       {
         id: "24",
-        title: "Llave de cruz reforzada 17\"–19\"–21\"–23\"",
+        title: 'Llave de cruz reforzada 17"–19"–21"–23"',
         imageSrc: "https://picsum.photos/seed/rs-p24/400/400",
         imageAlt: "Llave de cruz",
         price: 87500,

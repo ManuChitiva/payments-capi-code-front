@@ -20,7 +20,10 @@ export function AddToCartButton({
   return (
     <button
       type="button"
-      onClick={() => addItem(product)}
+      onClick={(e) => {
+        e.stopPropagation();
+        addItem(product);
+      }}
       className={`border border-[var(--store-primary)]/55 bg-transparent text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--store-primary)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--store-ring-focus)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--store-surface)] ${
         isGrid
           ? "w-full rounded-md py-2.5 hover:bg-[var(--store-muted)]/60"
