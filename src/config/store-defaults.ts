@@ -29,18 +29,7 @@ export const defaultStoreConfig: StoreConfig = {
     title: "Recogida",
     deliveryLabel: "Entrega",
     pickupLabel: "Recogida",
-    options: [
-      {
-        id: "local-a",
-        label: "Punto A — Centro",
-        address: "Calle 00 #00-00",
-      },
-      {
-        id: "local-b",
-        label: "Punto B — Norte",
-        address: "Carrera 00 #00-00",
-      },
-    ],
+    options: [],
   },
   catalog: {
     eyebrow: "Tienda online",

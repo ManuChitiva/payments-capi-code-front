@@ -117,7 +117,7 @@ function mapPickup(data: StoreApiResponse): StoreConfig["pickup"] {
     title: "Recogida",
     deliveryLabel: defaultStoreConfig.pickup.deliveryLabel,
     pickupLabel: defaultStoreConfig.pickup.pickupLabel,
-    options: options.length > 0 ? options : defaultStoreConfig.pickup.options,
+    options,
   };
 }
 

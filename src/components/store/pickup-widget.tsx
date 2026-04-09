@@ -32,29 +32,37 @@ export function PickupWidget({
           <span className="font-medium">A domicilio</span>
         </p>
         <div className="flex flex-col gap-2.5">
-          <label
-            className="text-[12px] font-semibold uppercase tracking-wider text-[var(--store-text-soft)]"
-            htmlFor="pickup-point"
-          >
-            {pickupLabel}
-          </label>
-          <select
-            id="pickup-point"
-            value={selected}
-            onChange={(e) => setSelected(e.target.value)}
-            className="w-full cursor-pointer rounded-xl border border-[var(--store-border-subtle)] bg-[var(--store-muted)]/40 px-4 py-3 text-[14px] font-medium text-[var(--store-text)] shadow-inner outline-none transition focus:border-[var(--store-primary)] focus:ring-2 focus:ring-[var(--store-ring-focus)]"
-          >
-            {options.map((o) => (
-              <option key={o.id} value={o.id}>
-                {o.label}
-              </option>
-            ))}
-          </select>
-          {current?.address ? (
-            <p className="rounded-xl border border-dashed border-[var(--store-border-subtle)] bg-[var(--store-muted)]/30 px-3 py-2.5 text-[13px] text-[var(--store-text-soft)]">
-              {current.address}
+          {options.length > 0 ? (
+            <>
+              <label
+                className="text-[12px] font-semibold uppercase tracking-wider text-[var(--store-text-soft)]"
+                htmlFor="pickup-point"
+              >
+                {pickupLabel}
+              </label>
+              <select
+                id="pickup-point"
+                value={selected}
+                onChange={(e) => setSelected(e.target.value)}
+                className="w-full cursor-pointer rounded-xl border border-[var(--store-border-subtle)] bg-[var(--store-muted)]/40 px-4 py-3 text-[14px] font-medium text-[var(--store-text)] shadow-inner outline-none transition focus:border-[var(--store-primary)] focus:ring-2 focus:ring-[var(--store-ring-focus)]"
+              >
+                {options.map((o) => (
+                  <option key={o.id} value={o.id}>
+                    {o.label}
+                  </option>
+                ))}
+              </select>
+              {current?.address ? (
+                <p className="rounded-xl border border-dashed border-[var(--store-border-subtle)] bg-[var(--store-muted)]/30 px-3 py-2.5 text-[13px] text-[var(--store-text-soft)]">
+                  {current.address}
+                </p>
+              ) : null}
+            </>
+          ) : (
+            <p className="text-[13px] text-[var(--store-text-soft)]">
+              No hay puntos de recogida disponibles.
             </p>
-          ) : null}
+          )}
         </div>
       </div>
     </SidebarSection>
