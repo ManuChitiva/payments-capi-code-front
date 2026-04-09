@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useId } from "react";
 import { AddToCartButton } from "@/components/store/add-to-cart-button";
 import { formatStorePrice } from "@/lib/format-store-price";
+import { trackStoreEvent } from "@/lib/store-analytics";
 import type { StoreProduct } from "@/lib/store-types";
 
 const DEFAULT_COPY =
@@ -40,6 +41,15 @@ export function ProductDetailModal({
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open, onClose]);
+
+  useEffect(() => {
+    if (!product) return;
+    trackStoreEvent({
+      eventType: "PRODUCT_VIEW",
+      productId: Number(product.id),
+      source: "product-detail-modal",
+    });
+  }, [product]);
 
   if (!product) return null;
 

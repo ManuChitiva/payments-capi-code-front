@@ -190,6 +190,8 @@ export async function getStoreConfigFromApi(): Promise<StoreConfig> {
 
     return {
       ...defaultStoreConfig,
+      storeId: data.id,
+      slug: data.slug,
       brand: {
         ...defaultStoreConfig.brand,
         monogram: toMonogram(data.name ?? defaultStoreConfig.brand.name),

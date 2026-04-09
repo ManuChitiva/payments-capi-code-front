@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/components/store/cart-context";
+import { trackStoreEvent } from "@/lib/store-analytics";
 import type { StoreProduct } from "@/lib/store-types";
 
 export type AddToCartButtonProps = {
@@ -36,6 +37,11 @@ export function AddToCartButton({
         e.stopPropagation();
         if (isOutOfStock) return;
         addItem(product);
+        trackStoreEvent({
+          eventType: "ADD_TO_CART",
+          productId: Number(product.id),
+          source: `add-to-cart-${layout}`,
+        });
         setJustAdded(true);
         if (resetTimer.current) {
           window.clearTimeout(resetTimer.current);

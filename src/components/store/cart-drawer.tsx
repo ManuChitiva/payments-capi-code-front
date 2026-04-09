@@ -186,14 +186,13 @@ export function CartDrawer() {
               >
                 Ver carrito completo
               </Link>
-              <button
-                type="button"
-                className="min-h-[2.75rem] border border-[var(--store-border-subtle)] bg-[var(--store-muted)]/30 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--store-text-soft)]"
-                disabled
-                title="Conecta tu pasarela de pago"
+              <Link
+                href={FULL_CART_HREF}
+                onClick={closeDrawer}
+                className="flex min-h-[2.75rem] items-center justify-center border border-[var(--store-primary)] bg-[var(--store-primary)] text-center text-[10px] font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90"
               >
-                Finalizar pedido
-              </button>
+                Finalizar y pagar
+              </Link>
               <button
                 type="button"
                 className="pt-1 text-center text-[10px] font-semibold uppercase tracking-wider text-[var(--store-text-soft)] underline-offset-4 hover:text-[var(--store-primary)] hover:underline"

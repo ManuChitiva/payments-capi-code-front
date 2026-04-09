@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { AddToCartButton } from "@/components/store/add-to-cart-button";
 import { formatStorePrice } from "@/lib/format-store-price";
+import { trackStoreEvent } from "@/lib/store-analytics";
 import type { StoreProduct } from "@/lib/store-types";
 
 export type ProductCardProps = {
@@ -24,7 +25,14 @@ export function ProductCard({
     locale,
   );
 
-  const openDetail = () => onOpenDetail?.(product);
+  const openDetail = () => {
+    trackStoreEvent({
+      eventType: "PRODUCT_CLICK",
+      productId: Number(product.id),
+      source: `catalog-${layout}`,
+    });
+    onOpenDetail?.(product);
+  };
   const available = product.availableQuantity;
 
   if (layout === "list") {

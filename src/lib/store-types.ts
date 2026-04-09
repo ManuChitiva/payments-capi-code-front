@@ -60,6 +60,10 @@ export type StoreThemeVars = {
 };
 
 export type StoreConfig = {
+  /** Numeric store id from STORE API (checkout / PayU) */
+  storeId?: number;
+  /** Store slug used in STORE API paths */
+  slug?: string;
   brand: BrandConfig;
   navLinks: NavLinkItem[];
   contact: {
