@@ -154,8 +154,8 @@ function mapProducts(data: ProductApiResponse[]): StoreConfig["catalog"]["produc
 }
 
 export async function getStoreConfigFromApi(): Promise<StoreConfig> {
-  const baseUrl = process.env.STORE_API_BASE_URL;
-  const slug = process.env.STORE_API_SLUG ?? "01";
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const slug = process.env.NEXT_PUBLIC_STORE_API_SLUG?.trim() || "01";
 
   if (!baseUrl) return withoutMockProducts(defaultStoreConfig);
 

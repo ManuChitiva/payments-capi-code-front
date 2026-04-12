@@ -90,7 +90,7 @@ export function CartPageView({
   function onPay() {
     setError(null);
     if (!storeId) {
-      setError("Configura STORE_API_BASE_URL y datos de tienda para pagar.");
+      setError("Configura NEXT_PUBLIC_API_BASE_URL y datos de tienda para pagar.");
       return;
     }
     if (!payuStatus?.payuActive) {
@@ -279,8 +279,8 @@ export function CartPageView({
         {!apiConfigured ? (
           <p className="mt-4 text-xs text-[var(--store-text-soft)]">
             Define{" "}
-            <code className="text-[10px]">STORE_API_BASE_URL</code> y{" "}
-            <code className="text-[10px]">STORE_API_SLUG</code> en{" "}
+            <code className="text-[10px]">NEXT_PUBLIC_API_BASE_URL</code> y{" "}
+            <code className="text-[10px]">NEXT_PUBLIC_STORE_API_SLUG</code> en{" "}
             <code className="text-[10px]">.env.local</code> para enlazar esta
             vitrina con tu API Java y habilitar el cobro.
           </p>

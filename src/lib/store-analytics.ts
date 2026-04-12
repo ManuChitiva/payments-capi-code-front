@@ -15,7 +15,7 @@ type TrackStoreEventInput = {
 const SESSION_STORAGE_KEY = "store_analytics_session_id";
 
 function resolveBaseUrl(): string | null {
-  const value = process.env.NEXT_PUBLIC_STORE_API_BASE_URL?.trim();
+  const value = process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
   return value ? value.replace(/\/$/, "") : null;
 }
 

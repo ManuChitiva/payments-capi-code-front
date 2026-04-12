@@ -9,7 +9,7 @@ export type PayuStatus = {
 };
 
 export async function fetchPayuStatus(slug: string): Promise<PayuStatus | null> {
-  const base = process.env.STORE_API_BASE_URL?.replace(/\/$/, "");
+  const base = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "");
   if (!base || !slug) return null;
   try {
     const res = await fetch(
@@ -34,9 +34,9 @@ export async function checkoutAndStartPayu(
   customerPhone: string,
   lines: CartLineForCheckout[],
 ): Promise<CheckoutPayuResult> {
-  const base = process.env.STORE_API_BASE_URL?.replace(/\/$/, "");
+  const base = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "");
   if (!base) {
-    return { ok: false, message: "Falta STORE_API_BASE_URL en el servidor." };
+    return { ok: false, message: "Falta NEXT_PUBLIC_API_BASE_URL en el servidor." };
   }
 
   const checkoutRes = await fetch(`${base}/checkout`, {

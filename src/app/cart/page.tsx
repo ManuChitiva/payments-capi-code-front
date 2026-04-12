@@ -13,7 +13,7 @@ export default async function CartPage() {
   const store = await getStoreConfigFromApi();
 
   const payuStatusFetchAttempted = Boolean(
-    store.slug && process.env.STORE_API_BASE_URL,
+    store.slug && process.env.NEXT_PUBLIC_API_BASE_URL,
   );
   const payuStatus = payuStatusFetchAttempted
     ? await fetchPayuStatus(store.slug!)

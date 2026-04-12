@@ -8,12 +8,12 @@ type AnalyticsPayload = {
 };
 
 export async function POST(request: Request) {
-  const baseUrl = process.env.STORE_API_BASE_URL?.trim();
-  const slug = process.env.STORE_API_SLUG?.trim() || "01";
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
+  const slug = process.env.NEXT_PUBLIC_STORE_API_SLUG?.trim() || "01";
 
   if (!baseUrl) {
     return NextResponse.json(
-      { error: "STORE_API_BASE_URL is not configured" },
+      { error: "NEXT_PUBLIC_API_BASE_URL is not configured" },
       { status: 500 },
     );
   }
