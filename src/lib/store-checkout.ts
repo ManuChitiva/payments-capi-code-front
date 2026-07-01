@@ -1,6 +1,11 @@
 "use server";
 
-export type CartLineForCheckout = { id: string; quantity: number };
+export type CartLineForCheckout = {
+  id: string;
+  quantity: number;
+  /** Cuando la línea viene de una variante, su id. null/undefined = producto simple. */
+  variantId?: string | null;
+};
 
 export type PayuStatus = {
   payuActive: boolean;
@@ -49,6 +54,8 @@ export async function checkoutAndStartPayu(
       customerPhone: customerPhone.trim() === "" ? null : customerPhone.trim(),
       items: lines.map((l) => ({
         productId: Number(l.id),
+        productVariantId:
+          l.variantId && l.variantId !== "" ? Number(l.variantId) : null,
         quantity: l.quantity,
       })),
     }),

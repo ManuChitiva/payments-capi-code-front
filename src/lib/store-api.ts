@@ -1,7 +1,12 @@
 "use server";
 
 import { defaultStoreConfig } from "@/config/store-defaults";
-import type { ContactLine, PickupOption, StoreConfig } from "@/lib/store-types";
+import type {
+  ContactLine,
+  PickupOption,
+  StoreConfig,
+  StoreProductVariant,
+} from "@/lib/store-types";
 
 type StorePickupApi = {
   id: number;
@@ -23,6 +28,19 @@ type StoreApiResponse = {
   pickups: StorePickupApi[];
 };
 
+type ProductVariantApiResponse = {
+  id: number;
+  productId: number;
+  sku: string;
+  title: string;
+  imageUrl: string | null;
+  price: number;
+  availableQuantity: number;
+  active: boolean;
+  sortOrder: number;
+  createdAt: string;
+};
+
 type ProductApiResponse = {
   id: number;
   storeId: number;
@@ -34,6 +52,8 @@ type ProductApiResponse = {
   availableQuantity: number;
   currency: string | null;
   createdAt: string;
+  /** Vitrina pública solo envía variantes activas (filtradas en backend) */
+  variants?: ProductVariantApiResponse[];
 };
 
 function withoutMockProducts(config: StoreConfig): StoreConfig {
@@ -121,12 +141,11 @@ function mapPickup(data: StoreApiResponse): StoreConfig["pickup"] {
   };
 }
 
-function mergeTheme(data: StoreApiResponse): StoreConfig["theme"] {
-  if (!data.primaryColor) return defaultStoreConfig.theme;
-  return {
-    ...defaultStoreConfig.theme,
-    "--store-primary": data.primaryColor,
-  };
+function resolveTheme(): StoreConfig["theme"] {
+  // La paleta de marca es local (ver `src/config/store-palette.ts`).
+  // Se ignora `data.primaryColor` intencionalmente para mantener control
+  // total sobre la identidad visual desde el código del storefront.
+  return defaultStoreConfig.theme;
 }
 
 function currencyToSymbol(currency: string | null | undefined): string {
@@ -135,22 +154,59 @@ function currencyToSymbol(currency: string | null | undefined): string {
   return currency.toUpperCase();
 }
 
+function mapVariant(
+  v: ProductVariantApiResponse,
+  parentId: string,
+  fallbackCurrencySymbol: string,
+  fallbackImageSrc: string,
+): StoreProductVariant {
+  return {
+    id: String(v.id),
+    productId: parentId,
+    sku: v.sku,
+    title: v.title,
+    imageSrc: v.imageUrl?.trim() || fallbackImageSrc,
+    imageAlt: v.title,
+    price: Number(v.price),
+    currencySymbol: fallbackCurrencySymbol,
+    availableQuantity: Math.max(0, Number(v.availableQuantity ?? 0)),
+    sortOrder: Number(v.sortOrder ?? 0),
+  };
+}
+
 function mapProducts(data: ProductApiResponse[]): StoreConfig["catalog"]["products"] {
   return data
     .filter((item) => item.active)
-    .map((item) => ({
-      id: String(item.id),
-      title: item.name,
-      imageSrc:
+    .map((item) => {
+      const productId = String(item.id);
+      const fallbackImageSrc =
         item.imageUrl?.trim() ||
-        "https://picsum.photos/seed/store-default-product/400/400",
-      imageAlt: item.name,
-      price: Number(item.price),
-      currencySymbol: currencyToSymbol(item.currency),
-      availableQuantity: Math.max(0, Number(item.availableQuantity ?? 0)),
-      description: item.description ?? undefined,
-      ref: `REF-${item.id}`,
-    }));
+        "https://picsum.photos/seed/store-default-product/400/400";
+      const currencySymbol = currencyToSymbol(item.currency);
+      const variants = (item.variants ?? [])
+        .filter((v) => v.active)
+        .map((v) =>
+          mapVariant(v, productId, currencySymbol, fallbackImageSrc),
+        )
+        .sort(
+          (a, b) =>
+            a.sortOrder - b.sortOrder ||
+            Number(a.id) - Number(b.id),
+        );
+
+      return {
+        id: productId,
+        title: item.name,
+        imageSrc: fallbackImageSrc,
+        imageAlt: item.name,
+        price: Number(item.price),
+        currencySymbol,
+        availableQuantity: Math.max(0, Number(item.availableQuantity ?? 0)),
+        description: item.description ?? undefined,
+        ref: `REF-${item.id}`,
+        variants,
+      };
+    });
 }
 
 export async function getStoreConfigFromApi(): Promise<StoreConfig> {
@@ -201,7 +257,7 @@ export async function getStoreConfigFromApi(): Promise<StoreConfig> {
       },
       contact: mapContact(data),
       pickup: mapPickup(data),
-      theme: mergeTheme(data),
+      theme: resolveTheme(),
       catalog: {
         ...defaultStoreConfig.catalog,
         products: catalogProducts,

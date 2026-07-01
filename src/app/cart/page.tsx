@@ -23,11 +23,11 @@ export default async function CartPage() {
 
   return (
     <div
-      className="store-page-shell flex min-h-[100dvh] w-full flex-col text-[var(--store-text)]"
+      className="flex min-h-[100dvh] w-full flex-col text-[var(--store-text)]"
       style={store.theme ? themeToStyle(store.theme) : undefined}
     >
       <StoreNavbar brand={store.brand} links={store.navLinks} sticky />
-      <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8 sm:px-6 sm:py-10">
+      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 pb-28 sm:px-6 sm:py-10 sm:pb-10 lg:px-8 xl:px-10">
         <CartPageView
           storeId={store.storeId}
           storeName={store.brand.name}

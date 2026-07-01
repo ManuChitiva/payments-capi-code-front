@@ -25,33 +25,31 @@ export function BrandLogo({
           : "text-[0.52rem] sm:text-[0.6rem]";
 
   const inner = (
-    <span className={`flex min-w-0 items-center gap-2.5 sm:gap-3.5 ${className}`}>
+    <span className={`flex min-w-0 items-center gap-2.5 sm:gap-3 ${className}`}>
       {logoUrl ? (
         <Image
           src={logoUrl}
           alt=""
           width={48}
           height={48}
-          className="h-9 w-9 shrink-0 rounded-lg border border-[var(--store-border-subtle)] bg-[var(--store-surface)] p-0.5 object-contain shadow-[var(--store-shadow-soft)] sm:h-11 sm:w-11 sm:rounded-xl sm:p-1"
+          className="h-8 w-8 shrink-0 rounded-md border border-[var(--store-border-subtle)] bg-[var(--store-surface)] p-0.5 object-contain sm:h-9 sm:w-9"
         />
       ) : (
         <span
-          className="flex h-10 w-10 shrink-0 items-center justify-center overflow-visible rounded-lg border border-[var(--store-gold-border)] bg-gradient-to-br from-[var(--store-champagne)] via-[var(--store-muted)] to-[var(--store-surface)] px-1 py-1.5 font-brand shadow-[var(--store-shadow-soft)] sm:h-11 sm:w-11 sm:rounded-xl sm:py-1"
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-[var(--store-border-subtle)] bg-[var(--store-muted)] px-1 font-display font-semibold text-[var(--store-primary)] sm:h-9 sm:w-9"
           aria-hidden
         >
-          <span
-            className={`store-text-gold block max-w-full text-center leading-[1.2] ${monogramSizeClass}`}
-          >
+          <span className={`block max-w-full text-center leading-none ${monogramSizeClass}`}>
             {monogram}
           </span>
         </span>
       )}
       <span className="flex min-w-0 flex-col gap-0.5 leading-none">
-        <span className="truncate text-[12px] font-semibold tracking-[0.08em] text-[var(--store-primary)] sm:text-[13px] sm:tracking-[0.14em]">
+        <span className="truncate text-[13px] font-semibold tracking-tight text-[var(--store-text)] sm:text-[14px]">
           {name}
         </span>
         {tagline ? (
-          <span className="hidden text-[11px] font-medium tracking-wide text-[var(--store-text-soft)] sm:block">
+          <span className="hidden text-[11px] font-normal text-[var(--store-text-soft)] sm:block">
             {tagline}
           </span>
         ) : null}
@@ -63,7 +61,7 @@ export function BrandLogo({
     return (
       <Link
         href={homeHref}
-        className="rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--store-ring-focus)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--store-nav-bg)]"
+        className="rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--store-ring-focus)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--store-surface)]"
       >
         {inner}
       </Link>

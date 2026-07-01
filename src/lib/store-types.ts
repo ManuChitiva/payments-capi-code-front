@@ -39,6 +39,27 @@ export type StoreProduct = {
   ref?: string;
   /** Descripción larga (modal o futura página de detalle) */
   description?: string;
+  /** Variantes del producto (color, talla, presentación…). Vacío/ausente = producto simple. */
+  variants?: StoreProductVariant[];
+};
+
+/**
+ * Variante de un producto (color, talla, etc.). Una unidad seleccionable del catálogo.
+ * Si el producto tiene variantes, el comprador debe elegir una antes de añadir al carrito.
+ */
+export type StoreProductVariant = {
+  id: string;
+  /** Id del producto padre (referencia informativa) */
+  productId: string;
+  sku: string;
+  title: string;
+  imageSrc: string;
+  imageAlt: string;
+  /** Precio propio de la variante. Si difiere del producto, se usa este. */
+  price: number;
+  currencySymbol: string;
+  availableQuantity: number;
+  sortOrder: number;
 };
 
 export type StoreSortOption = {

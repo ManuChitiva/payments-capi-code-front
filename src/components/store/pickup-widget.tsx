@@ -25,9 +25,7 @@ export function PickupWidget({
     <SidebarSection title={title}>
       <div className="flex flex-col gap-4 text-[14px] leading-relaxed text-[var(--store-text)]">
         <p>
-          <span className="font-medium text-[var(--store-text-soft)]">
-            {deliveryLabel}
-          </span>
+          <span className="text-[var(--store-text-soft)]">{deliveryLabel}</span>
           <span className="text-[var(--store-text-soft)]"> · </span>
           <span className="font-medium">A domicilio</span>
         </p>
@@ -35,7 +33,7 @@ export function PickupWidget({
           {options.length > 0 ? (
             <>
               <label
-                className="text-[12px] font-semibold uppercase tracking-wider text-[var(--store-text-soft)]"
+                className="text-[12px] font-medium text-[var(--store-text-soft)]"
                 htmlFor="pickup-point"
               >
                 {pickupLabel}
@@ -44,7 +42,7 @@ export function PickupWidget({
                 id="pickup-point"
                 value={selected}
                 onChange={(e) => setSelected(e.target.value)}
-                className="w-full cursor-pointer rounded-xl border border-[var(--store-border-subtle)] bg-[var(--store-muted)]/40 px-4 py-3 text-[14px] font-medium text-[var(--store-text)] shadow-inner outline-none transition focus:border-[var(--store-primary)] focus:ring-2 focus:ring-[var(--store-ring-focus)]"
+                className="w-full cursor-pointer rounded-lg border border-[var(--store-border)] bg-[var(--store-surface)] px-4 py-3 text-[14px] text-[var(--store-text)] outline-none transition focus:border-[var(--store-primary)] focus:ring-2 focus:ring-[var(--store-ring-focus)]"
               >
                 {options.map((o) => (
                   <option key={o.id} value={o.id}>
@@ -53,7 +51,7 @@ export function PickupWidget({
                 ))}
               </select>
               {current?.address ? (
-                <p className="rounded-xl border border-dashed border-[var(--store-border-subtle)] bg-[var(--store-muted)]/30 px-3 py-2.5 text-[13px] text-[var(--store-text-soft)]">
+                <p className="rounded-lg border border-dashed border-[var(--store-border)] bg-[var(--store-muted)]/40 px-3 py-2.5 text-[13px] text-[var(--store-text-soft)]">
                   {current.address}
                 </p>
               ) : null}

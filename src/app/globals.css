@@ -1,100 +1,72 @@
 @import "tailwindcss";
 
-/* —— Luxury: champagne / oro (claro) —— */
+/* —— Apple-style: blanco y negro puros, azul eléctrico como acento (claro) —— */
 html {
   color-scheme: light;
-  --background: #faf6ef;
-  --foreground: #1a1612;
-  /* Oro legible sobre fondos claros */
-  --store-primary: #7a5f18;
-  --store-primary-hover: #5c4710;
-  --store-on-primary: #fffdf7;
-  /* Oro metálico (CTA, acentos brillantes) */
-  --store-gold: #c9a227;
-  --store-gold-soft: #e8d9a8;
-  --store-gold-deep: #8a6b1b;
-  --store-gold-line: rgba(180, 140, 55, 0.45);
-  --store-btn-gold-top: #f2e6b8;
-  --store-btn-gold-mid: #d4af37;
-  --store-btn-gold-bot: #9a7319;
-  --store-on-gold: #141006;
-  --store-gold-shadow: 0 2px 16px rgba(154, 115, 38, 0.28);
-  --store-gold-shadow-hover: 0 4px 22px rgba(154, 115, 38, 0.38);
-  --store-champagne: #f5efe3;
-  --store-nav-bg: #fffdf9;
-  --store-nav-glass: rgba(255, 253, 249, 0.82);
-  --store-nav-top-line: rgba(201, 162, 39, 0.55);
-  --store-page-bg: #f7f1e8;
-  --store-surface: #fffdf9;
-  --store-muted: #f0e9dc;
-  --store-border: #e5d8c4;
-  --store-border-subtle: rgba(122, 95, 24, 0.12);
-  --store-gold-border: rgba(180, 145, 70, 0.38);
-  --store-text: #1a1612;
-  --store-text-soft: #6b5d4a;
-  --store-badge: #8a6b1b;
-  --store-on-badge: #fffef5;
-  --store-hover-overlay: rgba(122, 95, 24, 0.07);
+  --background: #ffffff;
+  --foreground: #1d1d1f;
+  /* Identidad de marca — constante entre temas */
+  --store-primary: #0071e3;
+  --store-primary-hover: #006edb;
+  --store-on-primary: #ffffff;
+  /* Superficies y texto */
+  --store-page-bg: #ffffff;
+  --store-surface: #ffffff;
+  --store-muted: #f5f5f7;
+  --store-border: rgba(0, 0, 0, 0.08);
+  --store-border-subtle: rgba(0, 0, 0, 0.04);
+  --store-text: #1d1d1f;
+  --store-text-soft: #6e6e73;
+  --store-badge: #0071e3;
+  --store-on-badge: #ffffff;
+  --store-hover-overlay: rgba(0, 0, 0, 0.04);
+  /* Sombras sutiles y en capas — al estilo Apple */
   --store-shadow-soft:
-    0 1px 0 rgba(122, 95, 24, 0.08), 0 14px 44px -18px rgba(90, 70, 30, 0.2);
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 4px 12px rgba(0, 0, 0, 0.04);
   --store-shadow-hover:
-    0 1px 0 rgba(122, 95, 24, 0.1), 0 22px 50px -20px rgba(90, 70, 30, 0.26);
-  --store-mesh-a: rgba(201, 162, 39, 0.12);
-  --store-mesh-b: rgba(154, 115, 38, 0.06);
-  --store-harlequin: rgba(154, 115, 38, 0.045);
-  --store-ring-focus: rgba(201, 162, 39, 0.55);
+    0 2px 4px rgba(0, 0, 0, 0.06),
+    0 12px 24px rgba(0, 0, 0, 0.08);
+  --store-ring-focus: rgba(0, 113, 227, 0.4);
 }
 
-/* —— Luxury: carbón / oro vivo (oscuro) —— */
+/* —— Apple-style: negro puro, azul brillante como acento (oscuro) —— */
 html[data-theme="dark"] {
   color-scheme: dark;
-  --background: #0c0a08;
-  --foreground: #faf6ef;
-  --store-primary: #e8c547;
-  --store-primary-hover: #f5d866;
-  --store-on-primary: #100d08;
-  --store-gold: #e8c547;
-  --store-gold-soft: #f5e6a8;
-  --store-gold-deep: #b8860b;
-  --store-gold-line: rgba(232, 197, 71, 0.35);
-  --store-btn-gold-top: #fff8dc;
-  --store-btn-gold-mid: #f0d050;
-  --store-btn-gold-bot: #b8860b;
-  --store-on-gold: #0d0b07;
-  --store-gold-shadow: 0 2px 24px rgba(232, 197, 71, 0.22);
-  --store-gold-shadow-hover: 0 4px 32px rgba(232, 197, 71, 0.32);
-  --store-champagne: #1f1a14;
-  --store-nav-bg: #0c0a08;
-  --store-nav-glass: rgba(12, 10, 8, 0.88);
-  --store-nav-top-line: rgba(232, 197, 71, 0.4);
-  --store-page-bg: #0c0a08;
-  --store-surface: #16130f;
-  --store-muted: #221e18;
-  --store-border: rgba(232, 197, 71, 0.22);
-  --store-border-subtle: rgba(232, 197, 71, 0.12);
-  --store-gold-border: rgba(232, 197, 71, 0.35);
-  --store-text: #faf6ef;
-  --store-text-soft: #bdae9a;
-  --store-badge: #c9a227;
-  --store-on-badge: #140f08;
-  --store-hover-overlay: rgba(232, 197, 71, 0.1);
+  --background: #000000;
+  --foreground: #f5f5f7;
+  /* Identidad de marca — constante entre temas */
+  --store-primary: #2997ff;
+  --store-primary-hover: #4eb1ff;
+  --store-on-primary: #ffffff;
+  /* Superficies y texto */
+  --store-page-bg: #000000;
+  --store-surface: #1d1d1f;
+  --store-muted: #161617;
+  --store-border: rgba(255, 255, 255, 0.1);
+  --store-border-subtle: rgba(255, 255, 255, 0.05);
+  --store-text: #f5f5f7;
+  --store-text-soft: #a1a1a6;
+  --store-badge: #2997ff;
+  --store-on-badge: #ffffff;
+  --store-hover-overlay: rgba(255, 255, 255, 0.06);
+  /* Sombras más profundas para que se noten sobre negro */
   --store-shadow-soft:
-    0 1px 0 rgba(0, 0, 0, 0.45), 0 16px 48px -16px rgba(0, 0, 0, 0.65);
+    0 1px 2px rgba(0, 0, 0, 0.3),
+    0 4px 12px rgba(0, 0, 0, 0.4);
   --store-shadow-hover:
-    0 1px 0 rgba(232, 197, 71, 0.15), 0 24px 56px -16px rgba(0, 0, 0, 0.75);
-  --store-mesh-a: rgba(232, 197, 71, 0.08);
-  --store-mesh-b: rgba(201, 162, 39, 0.05);
-  --store-harlequin: rgba(232, 197, 71, 0.04);
-  --store-ring-focus: rgba(232, 197, 71, 0.5);
+    0 2px 4px rgba(0, 0, 0, 0.4),
+    0 12px 24px rgba(0, 0, 0, 0.5);
+  --store-ring-focus: rgba(41, 151, 255, 0.5);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-manrope);
+  --font-sans: var(--font-inter);
   --font-mono: var(--font-geist-mono);
-  --font-brand: var(--font-brand-script);
-  --font-display: var(--font-display-serif);
+  --font-display: var(--font-inter);
+  --font-brand: var(--font-inter);
 }
 
 body {
@@ -103,134 +75,99 @@ body {
   min-height: 100dvh;
   background: var(--store-page-bg);
   color: var(--store-text);
-  font-family: var(--font-manrope), system-ui, sans-serif;
+  font-family: var(--font-inter), system-ui, -apple-system, "Segoe UI",
+    sans-serif;
   font-feature-settings:
     "kern" 1,
     "liga" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.011em;
 }
 
-.font-brand {
-  font-family: var(--font-brand-script), var(--font-manrope), cursive;
-  font-weight: 400;
-}
-
+/* Tipografía display — la misma sans, pero más grande y tracking ajustado */
 .font-display {
-  font-family: var(--font-display-serif), ui-serif, Georgia, serif;
-  font-weight: 400;
-  letter-spacing: -0.02em;
+  font-family: var(--font-inter), system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  line-height: 1.05;
 }
 
-/* Fondo tipo tarjeta premium: bruma oro + damero muy suave */
-.store-page-shell {
-  background-color: var(--store-page-bg);
-  background-image:
-    radial-gradient(
-      ellipse 110% 75% at 50% -28%,
-      var(--store-mesh-a),
-      transparent 52%
-    ),
-    radial-gradient(
-      ellipse 55% 42% at 100% 0%,
-      var(--store-mesh-b),
-      transparent 48%
-    ),
-    linear-gradient(
-        135deg,
-        var(--store-harlequin) 25%,
-        transparent 25%,
-        transparent 50%,
-        var(--store-harlequin) 50%,
-        var(--store-harlequin) 75%,
-        transparent 75%,
-        transparent
-      )
-      0 0 / 28px 28px;
+/* Compatibilidad: `font-brand` ahora también usa Inter (Apple no usa scripts) */
+.font-brand {
+  font-family: var(--font-inter), system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.022em;
 }
 
-/* Monograma / titulares con acabado oro */
-.store-text-gold {
-  background: linear-gradient(
-    165deg,
-    var(--store-gold-soft) 0%,
-    var(--store-gold) 42%,
-    var(--store-gold-deep) 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-html[data-theme="dark"] .store-text-gold {
-  background: linear-gradient(
-    165deg,
-    #fffef5 0%,
-    var(--store-gold) 38%,
-    var(--store-gold-deep) 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-/* Botón circular tipo joya */
-.store-btn-gold {
-  background-image: linear-gradient(
-    168deg,
-    var(--store-btn-gold-top) 0%,
-    var(--store-btn-gold-mid) 46%,
-    var(--store-btn-gold-bot) 100%
-  );
-  color: var(--store-on-gold);
-  box-shadow: var(--store-gold-shadow);
+/* —— Elevación de tarjetas — sutil, sin tintes cálidos —— */
+.store-shadow-card {
+  box-shadow: var(--store-shadow-soft);
   transition:
-    filter 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.store-shadow-card:hover {
+  box-shadow: var(--store-shadow-hover);
 }
 
-.store-btn-gold:hover {
-  filter: brightness(1.06);
-  box-shadow: var(--store-gold-shadow-hover);
+/* Elevación más marcada para escaparates / hero */
+.store-shadow-hero {
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 12px 32px rgba(0, 0, 0, 0.08);
+}
+html[data-theme="dark"] .store-shadow-hero {
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.3),
+    0 16px 40px rgba(0, 0, 0, 0.5);
 }
 
-.store-btn-gold:active {
-  filter: brightness(0.96);
-  transform: scale(0.96);
+/* Efecto de elevación al hacer hover — lift sutil */
+.store-lift {
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.store-lift:hover {
+  transform: translateY(-2px);
 }
 
-/* Enlaces de navegación desktop */
+/* Sombra interior para inputs y superficies "hundidas" */
+.store-inset-soft {
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+html[data-theme="dark"] .store-inset-soft {
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* —— Botón sólido estilo Apple —— */
+.store-btn-solid {
+  background-color: var(--store-primary);
+  color: var(--store-on-primary);
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+.store-btn-solid:hover {
+  background-color: var(--store-primary-hover);
+}
+.store-btn-solid:active {
+  transform: scale(0.98);
+}
+
+/* —— Enlaces de navegación desktop —— */
 .store-nav-link {
   position: relative;
   padding-bottom: 2px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--store-text-soft);
-  transition: color 0.2s ease;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--store-text);
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
 }
 .store-nav-link:hover {
-  color: var(--store-primary);
-}
-.store-nav-link::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--store-gold),
-    transparent
-  );
-  transform: scaleX(0);
-  transform-origin: right center;
-  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.store-nav-link:hover::after,
-.store-nav-link:focus-visible::after {
-  transform: scaleX(1);
-  transform-origin: left center;
+  opacity: 1;
 }

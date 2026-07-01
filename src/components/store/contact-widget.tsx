@@ -8,7 +8,7 @@ import { SidebarSection } from "@/components/store/sidebar-section";
 import type { ContactLine } from "@/lib/store-types";
 
 function ContactIcon({ icon }: { icon: ContactLine["icon"] }) {
-  const c = "h-[18px] w-[18px] shrink-0 text-[var(--store-primary)]";
+  const c = "h-[18px] w-[18px] shrink-0 text-[var(--store-text-soft)]";
   if (icon === "whatsapp") return <IconWhatsApp className={c} />;
   if (icon === "phone") return <IconPhone className={c} />;
   return <IconLocation className={c} />;
@@ -22,25 +22,27 @@ export type ContactWidgetProps = {
 export function ContactWidget({ title, lines }: ContactWidgetProps) {
   return (
     <SidebarSection title={title}>
-      <ul className="flex flex-col gap-3.5">
+      <ul className="flex flex-col divide-y divide-[var(--store-border)]">
         {lines.map((line, i) => (
           <li
             key={i}
-            className="flex items-start gap-3.5 text-[14px] leading-snug text-[var(--store-text)]"
+            className="flex items-start gap-3 py-3 text-[14px] leading-snug text-[var(--store-text)] first:pt-0 last:pb-0"
           >
-            <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-[var(--store-border-subtle)] bg-[var(--store-muted)]/60">
+            <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center">
               <ContactIcon icon={line.icon} />
             </span>
-            <span className="min-w-0 pt-1.5">
+            <span className="min-w-0 flex-1 self-center">
               {line.href ? (
                 <Link
                   href={line.href}
-                  className="break-words font-medium underline decoration-[var(--store-border)] decoration-1 underline-offset-4 transition hover:text-[var(--store-primary)] hover:decoration-[var(--store-primary)]"
+                  className="break-words text-[var(--store-text)] transition hover:text-[var(--store-primary)]"
                 >
                   {line.label}
                 </Link>
               ) : (
-                <span className="break-words">{line.label}</span>
+                <span className="break-words text-[var(--store-text)]">
+                  {line.label}
+                </span>
               )}
             </span>
           </li>

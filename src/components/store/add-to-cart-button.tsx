@@ -9,18 +9,37 @@ export type AddToCartButtonProps = {
   product: StoreProduct;
   /** Cuadrícula: botón a ancho completo; lista: ancho automático */
   layout?: "grid" | "list";
+  /**
+   * Si se pasa, el botón del card no añade directo: lo tratamos como
+   * "abrir selector" (lo usan productos con variantes desde la cuadrícula/lista).
+   * El evento de click sigue siendo del propio botón y se hace stopPropagation
+   * fuera para no abrir el modal dos veces.
+   */
+  onCardAddClick?: (e: React.MouseEvent) => void;
+  /** Etiqueta alternativa cuando el botón abre el selector en vez de añadir al carrito. */
+  cardLabel?: string;
 };
 
 export function AddToCartButton({
   product,
   layout = "grid",
+  onCardAddClick,
+  cardLabel,
 }: AddToCartButtonProps) {
   const { addItem } = useCart();
   const [justAdded, setJustAdded] = useState(false);
   const resetTimer = useRef<number | null>(null);
   const isOutOfStock = (product.availableQuantity ?? 1) <= 0;
+  const hasVariants = (product.variants?.length ?? 0) > 0;
 
   const isGrid = layout === "grid";
+  const label = isOutOfStock
+    ? "Sin stock"
+    : hasVariants
+      ? (cardLabel ?? "Elegir opciones")
+      : justAdded
+        ? "Agregado"
+        : "Añadir al carrito";
 
   useEffect(() => {
     return () => {
@@ -34,7 +53,9 @@ export function AddToCartButton({
     <button
       type="button"
       onClick={(e) => {
-        e.stopPropagation();
+        // El card ya gestiona stopPropagation si quiere abrir el detalle.
+        onCardAddClick?.(e);
+        if (hasVariants || onCardAddClick) return;
         if (isOutOfStock) return;
         addItem(product);
         trackStoreEvent({
@@ -48,25 +69,23 @@ export function AddToCartButton({
         }
         resetTimer.current = window.setTimeout(() => {
           setJustAdded(false);
-        }, 850);
+        }, 1200);
       }}
       aria-live="polite"
       disabled={isOutOfStock}
-      className={`border text-[10px] font-semibold uppercase tracking-[0.22em] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--store-ring-focus)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--store-surface)] ${
+      className={`text-[12px] font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--store-ring-focus)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--store-surface)] ${
+        isGrid ? "w-full rounded-md py-2" : "shrink-0 rounded-md px-4 py-2"
+      } ${
         justAdded
-          ? "scale-[1.02] border-[var(--store-primary)] bg-[var(--store-primary)]/12 text-[var(--store-text)] shadow-[0_0_0_3px_rgba(197,157,95,0.2)]"
+          ? "bg-[var(--store-primary)] text-[var(--store-on-primary)]"
           : isOutOfStock
-            ? "cursor-not-allowed border-[var(--store-border-subtle)] bg-[var(--store-muted)]/40 text-[var(--store-text-soft)] opacity-70"
-            : "border-[var(--store-primary)]/55 bg-transparent text-[var(--store-primary)]"
-      } ${
-        isGrid
-          ? "w-full rounded-md py-2.5"
-          : "shrink-0 rounded-md px-4 py-2"
-      } ${
-        isOutOfStock ? "" : "hover:bg-[var(--store-muted)]/60"
-      } `}
+            ? "cursor-not-allowed bg-[var(--store-muted)] text-[var(--store-text-soft)]"
+            : hasVariants
+              ? "bg-[var(--store-primary)] text-[var(--store-on-primary)] hover:bg-[var(--store-primary-hover)]"
+              : "bg-[var(--store-primary)] text-[var(--store-on-primary)] hover:bg-[var(--store-primary-hover)]"
+      }`}
     >
-      {isOutOfStock ? "Sin stock" : justAdded ? "Agregado" : "Añadir al carrito"}
+      {label}
     </button>
   );
 }

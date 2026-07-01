@@ -20,7 +20,10 @@ import {
   setLineQuantity,
   type CartLineItem,
 } from "@/lib/cart-storage";
-import type { StoreProduct } from "@/lib/store-types";
+import type {
+  StoreProduct,
+  StoreProductVariant,
+} from "@/lib/store-types";
 
 type CartContextValue = {
   items: CartLineItem[];
@@ -28,9 +31,9 @@ type CartContextValue = {
   isDrawerOpen: boolean;
   openDrawer: () => void;
   closeDrawer: () => void;
-  addItem: (product: StoreProduct) => void;
-  removeItem: (productId: string) => void;
-  setQuantity: (productId: string, quantity: number) => void;
+  addItem: (product: StoreProduct, variant?: StoreProductVariant) => void;
+  removeItem: (lineId: string) => void;
+  setQuantity: (lineId: string, quantity: number) => void;
   clear: () => void;
 };
 
@@ -64,16 +67,19 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const openDrawer = useCallback(() => setDrawerOpen(true), []);
   const closeDrawer = useCallback(() => setDrawerOpen(false), []);
 
-  const addItem = useCallback((product: StoreProduct) => {
-    addProductToCart(product);
+  const addItem = useCallback(
+    (product: StoreProduct, variant?: StoreProductVariant) => {
+      addProductToCart(product, variant);
+    },
+    [],
+  );
+
+  const removeItem = useCallback((lineId: string) => {
+    removeLineFromCart(lineId);
   }, []);
 
-  const removeItem = useCallback((productId: string) => {
-    removeLineFromCart(productId);
-  }, []);
-
-  const setQuantityCb = useCallback((productId: string, quantity: number) => {
-    setLineQuantity(productId, quantity);
+  const setQuantityCb = useCallback((lineId: string, quantity: number) => {
+    setLineQuantity(lineId, quantity);
   }, []);
 
   const clear = useCallback(() => {

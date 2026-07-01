@@ -42,7 +42,7 @@ export default async function PagoResultadoPage({
 
   return (
     <div
-      className="store-page-shell flex min-h-[100dvh] w-full flex-col text-[var(--store-text)]"
+      className="flex min-h-[100dvh] w-full flex-col text-[var(--store-text)]"
       style={store.theme ? themeToStyle(store.theme) : undefined}
     >
       <StoreNavbar brand={store.brand} links={store.navLinks} sticky />
