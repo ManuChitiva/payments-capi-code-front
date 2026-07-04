@@ -14,6 +14,26 @@ export type BrandConfig = {
   homeHref?: string;
 };
 
+/**
+ * Llamada a la acción del hero. `anchor` apunta a un id de la página (ej. "#productos").
+ */
+export type StoreHeroCta = {
+  label: string;
+  anchor: string;
+};
+
+/**
+ * Bloque principal (hero) de la landing. `headline` admite `*palabra*` para resaltar
+ * segmentos con el color primario de marca.
+ */
+export type StoreHero = {
+  eyebrow: string;
+  headline: string;
+  subline?: string;
+  primaryCta: StoreHeroCta;
+  secondaryCta?: StoreHeroCta;
+};
+
 export type ContactLine = {
   icon: "whatsapp" | "phone" | "location";
   label: string;
