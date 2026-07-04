@@ -9,6 +9,7 @@ export type StoreAnalyticsEventType =
 type TrackStoreEventInput = {
   eventType: StoreAnalyticsEventType;
   productId?: number;
+  variantId?: number;
   source?: string;
 };
 
@@ -44,6 +45,7 @@ function getSessionId(): string {
 export function trackStoreEvent({
   eventType,
   productId,
+  variantId,
   source,
 }: TrackStoreEventInput): void {
   if (typeof window === "undefined") return;
@@ -54,6 +56,7 @@ export function trackStoreEvent({
     : "/api/analytics/events";
   const payload = {
     productId,
+    variantId,
     eventType,
     sessionId: getSessionId(),
     source: source?.slice(0, 128),
