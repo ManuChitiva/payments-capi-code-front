@@ -67,6 +67,18 @@ export type StoreSortOption = {
   label: string;
 };
 
+/**
+ * Categoría destacada para el strip visual de la home (CategoryStrip).
+ * Cada tarjeta es un enlace a una sección/ruta del catálogo.
+ */
+export type StoreFeaturedCategory = {
+  id: string;
+  name: string;
+  imageSrc: string;
+  /** Enlace de la categoría. Si se omite, el componente usa fallbackHref. */
+  href?: string;
+};
+
 export type StoreThemeVars = {
   "--store-primary": string;
   "--store-primary-hover": string;
