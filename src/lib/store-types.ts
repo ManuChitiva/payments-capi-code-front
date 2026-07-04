@@ -14,6 +14,26 @@ export type BrandConfig = {
   homeHref?: string;
 };
 
+/**
+ * Llamada a la acción del hero. `anchor` apunta a un id de la página (ej. "#productos").
+ */
+export type StoreHeroCta = {
+  label: string;
+  anchor: string;
+};
+
+/**
+ * Bloque principal (hero) de la landing. `headline` admite `*palabra*` para resaltar
+ * segmentos con el color primario de marca.
+ */
+export type StoreHero = {
+  eyebrow: string;
+  headline: string;
+  subline?: string;
+  primaryCta: StoreHeroCta;
+  secondaryCta?: StoreHeroCta;
+};
+
 export type ContactLine = {
   icon: "whatsapp" | "phone" | "location";
   label: string;
@@ -39,11 +59,44 @@ export type StoreProduct = {
   ref?: string;
   /** Descripción larga (modal o futura página de detalle) */
   description?: string;
+  /** Variantes del producto (color, talla, presentación…). Vacío/ausente = producto simple. */
+  variants?: StoreProductVariant[];
+};
+
+/**
+ * Variante de un producto (color, talla, etc.). Una unidad seleccionable del catálogo.
+ * Si el producto tiene variantes, el comprador debe elegir una antes de añadir al carrito.
+ */
+export type StoreProductVariant = {
+  id: string;
+  /** Id del producto padre (referencia informativa) */
+  productId: string;
+  sku: string;
+  title: string;
+  imageSrc: string;
+  imageAlt: string;
+  /** Precio propio de la variante. Si difiere del producto, se usa este. */
+  price: number;
+  currencySymbol: string;
+  availableQuantity: number;
+  sortOrder: number;
 };
 
 export type StoreSortOption = {
   id: string;
   label: string;
+};
+
+/**
+ * Categoría destacada para el strip visual de la home (CategoryStrip).
+ * Cada tarjeta es un enlace a una sección/ruta del catálogo.
+ */
+export type StoreFeaturedCategory = {
+  id: string;
+  name: string;
+  imageSrc: string;
+  /** Enlace de la categoría. Si se omite, el componente usa fallbackHref. */
+  href?: string;
 };
 
 export type StoreThemeVars = {

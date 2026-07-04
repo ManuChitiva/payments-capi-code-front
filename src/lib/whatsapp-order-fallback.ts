@@ -6,6 +6,8 @@ export type CartLineBrief = {
   quantity: number;
   unitPrice: number;
   currencySymbol: string;
+  variantTitle?: string;
+  variantSku?: string;
 };
 
 /**
@@ -51,8 +53,11 @@ export function buildWhatsAppOrderMessage(input: {
 
   for (const line of input.lines) {
     const sub = line.unitPrice * line.quantity;
+    const variantPart = line.variantTitle
+      ? ` (${line.variantTitle}${line.variantSku ? ` · ${line.variantSku}` : ""})`
+      : "";
     parts.push(
-      `• ${line.quantity}× ${line.title} — ${formatStorePrice(sub, line.currencySymbol)}`,
+      `• ${line.quantity}× ${line.title}${variantPart} — ${formatStorePrice(sub, line.currencySymbol)}`,
     );
   }
 

@@ -1,4 +1,5 @@
 import type { StoreConfig } from "@/lib/store-types";
+import { storePalette } from "@/config/store-palette";
 
 /** Demo configuration: replace or load per-tenant in production */
 export const defaultStoreConfig: StoreConfig = {
@@ -31,6 +32,16 @@ export const defaultStoreConfig: StoreConfig = {
     pickupLabel: "Recogida",
     options: [],
   },
+  /**
+   * Tema derivado de `storePalette`. Se aplica como inline style en el layout
+   * raíz de cada página. Si en el futuro se quiere exponer más variables al
+   * config, ampliar `StoreThemeVars` y mapear aquí.
+   */
+  theme: {
+    "--store-primary": storePalette.primary,
+    "--store-primary-hover": storePalette.primaryHover,
+    "--store-badge": storePalette.badge,
+  },
   catalog: {
     eyebrow: "Tienda online",
     headline: "Todo lo que buscas, en un solo lugar",
@@ -53,6 +64,44 @@ export const defaultStoreConfig: StoreConfig = {
         ref: "SKU-TYR-195651591H",
         description:
           "Neumático touring para uso urbano y carretera. Buen equilibrio entre confort, duración y consumo. Verifica compatibilidad con tu vehículo antes de comprar.",
+        variants: [
+          {
+            id: "v1-rojo",
+            productId: "1",
+            sku: "TYR-195-ROJO",
+            title: "Línea Roja",
+            imageSrc: "https://picsum.photos/seed/rs-p1-rojo/400/400",
+            imageAlt: "Neumático touring — línea roja",
+            price: 289000,
+            currencySymbol: "$",
+            availableQuantity: 8,
+            sortOrder: 0,
+          },
+          {
+            id: "v1-negro",
+            productId: "1",
+            sku: "TYR-195-NEGRO",
+            title: "Línea Negra",
+            imageSrc: "https://picsum.photos/seed/rs-p1-negro/400/400",
+            imageAlt: "Neumático touring — línea negra",
+            price: 305000,
+            currencySymbol: "$",
+            availableQuantity: 4,
+            sortOrder: 1,
+          },
+          {
+            id: "v1-premium",
+            productId: "1",
+            sku: "TYR-195-PREMIUM",
+            title: "Edición Premium",
+            imageSrc: "https://picsum.photos/seed/rs-p1-premium/400/400",
+            imageAlt: "Neumático touring — edición premium",
+            price: 349000,
+            currencySymbol: "$",
+            availableQuantity: 0,
+            sortOrder: 2,
+          },
+        ],
       },
       {
         id: "2",

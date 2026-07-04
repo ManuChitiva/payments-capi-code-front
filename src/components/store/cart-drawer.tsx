@@ -49,21 +49,21 @@ export function CartDrawer() {
     <div className="fixed inset-0 z-[100]">
       <button
         type="button"
-        className="absolute inset-0 bg-black/55 backdrop-blur-[2px]"
+        className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"
         aria-label="Cerrar carrito"
         onClick={closeDrawer}
       />
       <aside
-        className="absolute right-0 top-0 flex h-full w-full max-w-md flex-col border-l border-[var(--store-border-subtle)] bg-[var(--store-page-bg)] shadow-[-12px_0_48px_rgba(0,0,0,0.35)]"
+        className="absolute right-0 top-0 flex h-full w-full max-w-md flex-col border-l border-[var(--store-border)] bg-[var(--store-surface)]"
         role="dialog"
         aria-modal="true"
         aria-labelledby="cart-drawer-title"
       >
-        <header className="flex shrink-0 items-center justify-between gap-3 border-b border-[var(--store-border-subtle)] px-5 py-4">
+        <header className="flex shrink-0 items-center justify-between gap-3 border-b border-[var(--store-border)] px-5 py-4">
           <div>
             <h2
               id="cart-drawer-title"
-              className="font-display text-xl text-[var(--store-text)]"
+              className="text-[17px] font-semibold text-[var(--store-text)]"
             >
               Carrito
             </h2>
@@ -74,7 +74,7 @@ export function CartDrawer() {
           </div>
           <button
             type="button"
-            className="grid h-10 w-10 place-items-center rounded-full text-[var(--store-text)] transition hover:bg-[var(--store-hover-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--store-ring-focus)]"
+            className="grid h-9 w-9 place-items-center rounded-md text-[var(--store-text)] transition hover:bg-[var(--store-hover-overlay)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--store-ring-focus)]"
             aria-label="Cerrar"
             onClick={closeDrawer}
           >
@@ -92,7 +92,7 @@ export function CartDrawer() {
               </p>
               <button
                 type="button"
-                className="mt-4 border border-[var(--store-primary)]/55 px-5 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--store-primary)] transition hover:bg-[var(--store-muted)]/60"
+                className="mt-4 rounded-md border border-[var(--store-primary)] px-5 py-2 text-[13px] font-medium text-[var(--store-primary)] transition hover:bg-[var(--store-primary)]/5"
                 onClick={closeDrawer}
               >
                 Seguir comprando
@@ -103,7 +103,7 @@ export function CartDrawer() {
               {items.map((line) => (
                 <li
                   key={line.id}
-                  className="flex gap-3 rounded-xl border border-[var(--store-border-subtle)] bg-[var(--store-surface)] p-3 shadow-[var(--store-shadow-soft)]"
+                  className="flex gap-3 rounded-xl border border-[var(--store-border)] bg-[var(--store-surface)] p-3"
                 >
                   <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-[var(--store-muted)]">
                     <Image
@@ -115,14 +115,19 @@ export function CartDrawer() {
                     />
                   </div>
                   <div className="min-w-0 flex-1 space-y-2">
-                    <h3 className="font-display text-sm leading-snug text-[var(--store-text)] line-clamp-2">
+                    <h3 className="line-clamp-2 text-[14px] font-medium leading-snug text-[var(--store-text)]">
                       {line.title}
                     </h3>
-                    <p className="text-xs tabular-nums text-[var(--store-primary)]">
+                    {line.variantTitle ? (
+                      <p className="inline-flex items-center rounded-full bg-[var(--store-muted)] px-2 py-0.5 text-[11px] font-normal text-[var(--store-text-soft)]">
+                        {line.variantTitle}
+                      </p>
+                    ) : null}
+                    <p className="text-xs tabular-nums text-[var(--store-text-soft)]">
                       {formatStorePrice(line.price, line.currencySymbol)} c/u
                     </p>
                     <div className="flex flex-wrap items-center gap-2">
-                      <div className="flex items-center rounded-md border border-[var(--store-border-subtle)]">
+                      <div className="flex items-center rounded-md border border-[var(--store-border)]">
                         <button
                           type="button"
                           className="grid h-8 w-8 place-items-center text-sm text-[var(--store-text)] hover:bg-[var(--store-hover-overlay)]"
@@ -133,7 +138,7 @@ export function CartDrawer() {
                         >
                           −
                         </button>
-                        <span className="min-w-[1.5rem] text-center text-xs font-semibold tabular-nums">
+                        <span className="min-w-[1.5rem] text-center text-xs font-medium tabular-nums">
                           {line.quantity}
                         </span>
                         <button
@@ -147,7 +152,7 @@ export function CartDrawer() {
                           +
                         </button>
                       </div>
-                      <span className="text-xs font-semibold tabular-nums text-[var(--store-text)]">
+                      <span className="text-xs font-medium tabular-nums text-[var(--store-text)]">
                         {formatStorePrice(
                           line.price * line.quantity,
                           line.currencySymbol,
@@ -155,7 +160,7 @@ export function CartDrawer() {
                       </span>
                       <button
                         type="button"
-                        className="ml-auto text-[10px] font-semibold uppercase tracking-wide text-[var(--store-text-soft)] underline-offset-2 hover:text-[var(--store-primary)] hover:underline"
+                        className="ml-auto text-[12px] font-normal text-[var(--store-text-soft)] hover:text-[var(--store-primary)]"
                         onClick={() => removeItem(line.id)}
                       >
                         Quitar
@@ -169,12 +174,12 @@ export function CartDrawer() {
         </div>
 
         {items.length > 0 ? (
-          <footer className="shrink-0 border-t border-[var(--store-border-subtle)] bg-[var(--store-surface)]/80 px-5 py-4 backdrop-blur-sm">
-            <div className="mb-4 flex items-center justify-between">
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-[var(--store-text-soft)]">
+          <footer className="shrink-0 border-t border-[var(--store-border)] bg-[var(--store-surface)] px-5 py-4">
+            <div className="mb-4 flex items-baseline justify-between">
+              <span className="text-[13px] font-normal text-[var(--store-text-soft)]">
                 Total
               </span>
-              <span className="font-display text-lg tabular-nums text-[var(--store-primary)]">
+              <span className="text-[20px] font-semibold tabular-nums text-[var(--store-text)]">
                 {formatStorePrice(subtotal, currencySymbol)}
               </span>
             </div>
@@ -182,20 +187,20 @@ export function CartDrawer() {
               <Link
                 href={FULL_CART_HREF}
                 onClick={closeDrawer}
-                className="flex min-h-[2.75rem] items-center justify-center border border-[var(--store-primary)]/55 text-center text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--store-primary)] transition hover:bg-[var(--store-muted)]/60"
+                className="flex min-h-[2.75rem] items-center justify-center rounded-md border border-[var(--store-primary)] text-center text-[13px] font-medium text-[var(--store-primary)] transition hover:bg-[var(--store-primary)]/5"
               >
                 Ver carrito completo
               </Link>
               <Link
                 href={FULL_CART_HREF}
                 onClick={closeDrawer}
-                className="flex min-h-[2.75rem] items-center justify-center border border-[var(--store-primary)] bg-[var(--store-primary)] text-center text-[10px] font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90"
+                className="flex min-h-[2.75rem] items-center justify-center rounded-md bg-[var(--store-primary)] text-center text-[13px] font-medium text-[var(--store-on-primary)] transition hover:bg-[var(--store-primary-hover)]"
               >
                 Finalizar y pagar
               </Link>
               <button
                 type="button"
-                className="pt-1 text-center text-[10px] font-semibold uppercase tracking-wider text-[var(--store-text-soft)] underline-offset-4 hover:text-[var(--store-primary)] hover:underline"
+                className="pt-1 text-center text-[12px] font-normal text-[var(--store-text-soft)] hover:text-[var(--store-primary)]"
                 onClick={() => clear()}
               >
                 Vaciar carrito

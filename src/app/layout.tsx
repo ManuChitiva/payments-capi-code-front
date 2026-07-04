@@ -1,29 +1,18 @@
 import type { Metadata } from "next";
-import { Geist_Mono, Great_Vibes, Manrope, DM_Serif_Display } from "next/font/google";
+import { Inter, Geist_Mono } from "next/font/google";
 import { AppProviders } from "@/components/store/app-providers";
 import { themeInitScriptContent } from "@/lib/theme-storage";
 import "./globals.css";
 
-const manrope = Manrope({
-  variable: "--font-manrope",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
-});
-
-const brandScript = Great_Vibes({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-brand-script",
-});
-
-const displaySerif = DM_Serif_Display({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-display-serif",
 });
 
 export const metadata: Metadata = {
@@ -40,7 +29,7 @@ export default function RootLayout({
     <html
       lang="es"
       suppressHydrationWarning
-      className={`${manrope.variable} ${geistMono.variable} ${brandScript.variable} ${displaySerif.variable} h-full antialiased`}
+      className={`${inter.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
         <script
