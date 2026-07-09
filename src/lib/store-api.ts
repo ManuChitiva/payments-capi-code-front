@@ -4,7 +4,6 @@ import { defaultStoreConfig } from "@/config/store-defaults";
 import type {
   ContactLine,
   PickupOption,
-  StoreAdvisor,
   StoreConfig,
   StoreProductVariant,
 } from "@/lib/store-types";
@@ -76,15 +75,11 @@ type ProductApiResponse = {
  * Espejo del DTO Java `PersonalMemberResponse`: solo expone los campos
  * visibles para que un cliente contacte al asesor.
  */
-type AdvisorApiResponse = {
-  id: number;
-  name: string;
-  phone: string | null;
-  whatsapp: string | null;
-  photoUrl: string | null;
-  active: boolean;
-  sortOrder: number;
-};
+/**
+ * Respuesta de asesores: el mapper vive en `@/lib/store-advisor-mapper`
+ * (compartido client/server). Ver `AdvisorsModalProvider` para el fetch
+ * lazy del modal.
+ */
 
 function withoutMockProducts(config: StoreConfig): StoreConfig {
   return {
@@ -243,26 +238,11 @@ function mapProducts(data: ProductApiResponse[]): StoreConfig["catalog"]["produc
  * Mapea un asesor del backend al shape del storefront. Solo se exponen
  * asesores activos. Si no hay foto, se usa un avatar neutro generado
  * por seed (consistente para re-renders).
+ *
+ * El mapper real vive en `@/lib/store-advisor-mapper` y se usa desde
+ * `AdvisorsModalProvider` (fetch lazy, client-side). Esta función queda
+ * eliminada del SSR.
  */
-function mapAdvisors(data: AdvisorApiResponse[]): StoreAdvisor[] {
-  const active = data.filter((item) => item.active);
-  return active
-    .map((item) => ({
-      sortOrder: Number(item.sortOrder ?? 0),
-      advisor: {
-        id: String(item.id),
-        name: item.name?.trim() || "Asesor",
-        photoSrc:
-          item.photoUrl?.trim() ||
-          `https://picsum.photos/seed/rs-asesor-api-${item.id}/240/240`,
-        photoAlt: `Foto de ${item.name}`,
-        whatsapp: item.whatsapp ?? undefined,
-        phone: item.phone ?? undefined,
-      },
-    }))
-    .sort((a, b) => a.sortOrder - b.sortOrder)
-    .map((entry) => entry.advisor);
-}
 
 export async function getStoreConfigFromApi(): Promise<StoreConfig> {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -284,7 +264,6 @@ export async function getStoreConfigFromApi(): Promise<StoreConfig> {
 
     const data = (await res.json()) as StoreApiResponse;
     const productsEndpoint = `${sanitizedBaseUrl}/stores/${slug}/products`;
-    const advisorsEndpoint = `${sanitizedBaseUrl}/stores/${slug}/personal`;
 
     let catalogProducts: StoreConfig["catalog"]["products"] = [];
     try {
@@ -300,24 +279,8 @@ export async function getStoreConfigFromApi(): Promise<StoreConfig> {
       // Keep empty catalog if products endpoint fails.
     }
 
-    // Asesores: si el endpoint público responde 2xx, lo usamos (incluso si
-    // la lista viene vacía — el merchant podría no haber publicado ninguno).
-    // Si falla (404 hasta que se exponga el endpoint, error de red, etc.),
-    // caemos al seed de `defaultStoreConfig.advisors` para que el modal
-    // del slide "Asesoría" siga siendo funcional durante el desarrollo.
-    let advisors: StoreAdvisor[] | undefined;
-    try {
-      const advisorsRes = await fetch(advisorsEndpoint, {
-        method: "GET",
-        cache: "no-store",
-      });
-      if (advisorsRes.ok) {
-        const advisorsData = (await advisorsRes.json()) as AdvisorApiResponse[];
-        advisors = mapAdvisors(advisorsData);
-      }
-    } catch {
-      // Network error: keep `undefined` to trigger seed fallback below.
-    }
+    // Asesores: el fetch se hace client-side, lazy, desde
+    // `AdvisorsModalProvider` cuando el usuario abre el modal.
 
     return {
       ...defaultStoreConfig,
@@ -351,7 +314,6 @@ export async function getStoreConfigFromApi(): Promise<StoreConfig> {
         ...defaultStoreConfig.catalog,
         products: catalogProducts,
       },
-      advisors: advisors ?? defaultStoreConfig.advisors ?? [],
     };
   } catch {
     return withoutMockProducts(defaultStoreConfig);

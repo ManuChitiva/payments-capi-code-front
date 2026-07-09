@@ -27,8 +27,19 @@ export default async function Home() {
   const hasSlides =
     Array.isArray(store.heroSlides) && store.heroSlides.length > 0;
 
+  // Slug y base URL para el fetch lazy del modal de asesores.
+  const advisorSlug =
+    store.slug ??
+    process.env.NEXT_PUBLIC_STORE_API_SLUG?.trim() ??
+    "01";
+  const advisorApiBaseUrl =
+    process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") ?? "";
+
   return (
-    <AdvisorsModalProvider advisors={store.advisors ?? []}>
+    <AdvisorsModalProvider
+      slug={advisorSlug}
+      apiBaseUrl={advisorApiBaseUrl}
+    >
       <div
         className="flex min-h-[100dvh] w-full flex-col text-[var(--store-text)]"
         style={store.theme ? themeToStyle(store.theme) : undefined}
