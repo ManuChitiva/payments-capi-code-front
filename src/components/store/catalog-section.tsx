@@ -1,8 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   IconChevronDown,
+  IconChevronLeft,
+  IconChevronRight,
   IconGrid,
   IconList,
   IconSearch,
@@ -10,6 +12,8 @@ import {
 import { ProductDetailModal } from "@/components/store/product-detail-modal";
 import { ProductCard } from "@/components/store/product-card";
 import type { StoreProduct, StoreSortOption } from "@/lib/store-types";
+
+const DEFAULT_PAGE_SIZE = 12;
 
 export type CatalogSectionProps = {
   eyebrow?: string;
@@ -31,6 +35,7 @@ export function CatalogSection({
   const [query, setQuery] = useState("");
   const [sortId, setSortId] = useState(sortOptions[0]?.id ?? "relevant");
   const [view, setView] = useState<"grid" | "list">("grid");
+  const [page, setPage] = useState(1);
   const [detailProduct, setDetailProduct] = useState<StoreProduct | null>(null);
 
   const filtered = useMemo(() => {
@@ -46,11 +51,51 @@ export function CatalogSection({
     return list;
   }, [filtered, sortId]);
 
+  // Reset to first page whenever the visible set changes (search / sort).
+  useEffect(() => {
+    setPage(1);
+  }, [query, sortId]);
+
+  const totalPages = Math.max(1, Math.ceil(sorted.length / DEFAULT_PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  const pageStart = sorted.length === 0 ? 0 : (safePage - 1) * DEFAULT_PAGE_SIZE + 1;
+  const pageEnd = Math.min(sorted.length, safePage * DEFAULT_PAGE_SIZE);
+  const pageItems = useMemo(
+    () => sorted.slice(pageStart - 1, pageEnd),
+    [sorted, pageStart, pageEnd],
+  );
+
   const currentSortLabel =
     sortOptions.find((o) => o.id === sortId)?.label ?? sortLabel;
 
   const countLabel =
-    sorted.length === 1 ? "1 artículo" : `${sorted.length} artículos`;
+    sorted.length === 0
+      ? "0 artículos"
+      : sorted.length === 1
+        ? "1 artículo"
+        : `Mostrando ${pageStart}–${pageEnd} de ${sorted.length} artículos`;
+
+  // Ventana de páginas a mostrar: siempre primera, última, actual y sus
+  // vecinas; el resto se reemplaza por elipsis para no desbordar el control.
+  const pageWindow = useMemo<(number | "ellipsis")[]>(() => {
+    if (totalPages <= 7) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+    const window = new Set<number>([1, totalPages, safePage]);
+    window.add(safePage - 1);
+    window.add(safePage + 1);
+    const ordered = [...window]
+      .filter((p) => p >= 1 && p <= totalPages)
+      .sort((a, b) => a - b);
+    const result: (number | "ellipsis")[] = [];
+    let prev = 0;
+    for (const p of ordered) {
+      if (prev && p - prev > 1) result.push("ellipsis");
+      result.push(p);
+      prev = p;
+    }
+    return result;
+  }, [safePage, totalPages]);
 
   return (
     <div className="min-w-0 space-y-10">
@@ -148,7 +193,7 @@ export function CatalogSection({
             : "flex flex-col gap-3"
         }
       >
-        {sorted.map((product) => (
+        {pageItems.map((product) => (
           <ProductCard
             key={product.id}
             product={product}
@@ -157,6 +202,60 @@ export function CatalogSection({
           />
         ))}
       </div>
+
+      {totalPages > 1 ? (
+        <nav
+          aria-label="Paginación del catálogo"
+          className="flex flex-wrap items-center justify-center gap-1.5 pt-2"
+        >
+          <button
+            type="button"
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={safePage <= 1}
+            className="inline-flex h-10 items-center gap-1.5 rounded-lg border border-[var(--store-border)] bg-[var(--store-surface)] px-3 text-[13px] font-medium text-[var(--store-text)] transition hover:border-[var(--store-primary)]/45 hover:text-[var(--store-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--store-ring-focus)] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-[var(--store-border)] disabled:hover:text-[var(--store-text)]"
+          >
+            <IconChevronLeft className="h-4 w-4" />
+            <span className="hidden sm:inline">Anterior</span>
+          </button>
+
+          {pageWindow.map((entry, idx) =>
+            entry === "ellipsis" ? (
+              <span
+                key={`ellipsis-${idx}`}
+                aria-hidden
+                className="grid h-10 w-10 place-items-center text-[var(--store-text-soft)]"
+              >
+                …
+              </span>
+            ) : (
+              <button
+                key={entry}
+                type="button"
+                onClick={() => setPage(entry)}
+                aria-current={entry === safePage ? "page" : undefined}
+                aria-label={`Ir a la página ${entry}`}
+                className={
+                  entry === safePage
+                    ? "grid h-10 w-10 place-items-center rounded-lg bg-[var(--store-primary)] text-[13px] font-semibold text-[var(--store-primary-contrast)] shadow-[var(--store-shadow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--store-ring-focus)]"
+                    : "grid h-10 w-10 place-items-center rounded-lg border border-[var(--store-border)] bg-[var(--store-surface)] text-[13px] font-medium text-[var(--store-text)] transition hover:border-[var(--store-primary)]/45 hover:text-[var(--store-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--store-ring-focus)]"
+                }
+              >
+                {entry}
+              </button>
+            ),
+          )}
+
+          <button
+            type="button"
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            disabled={safePage >= totalPages}
+            className="inline-flex h-10 items-center gap-1.5 rounded-lg border border-[var(--store-border)] bg-[var(--store-surface)] px-3 text-[13px] font-medium text-[var(--store-text)] transition hover:border-[var(--store-primary)]/45 hover:text-[var(--store-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--store-ring-focus)] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-[var(--store-border)] disabled:hover:text-[var(--store-text)]"
+          >
+            <span className="hidden sm:inline">Siguiente</span>
+            <IconChevronRight className="h-4 w-4" />
+          </button>
+        </nav>
+      ) : null}
 
       {sorted.length === 0 ? (
         <div className="rounded-xl border border-dashed border-[var(--store-border)] bg-[var(--store-muted)]/30 px-6 py-16 text-center">
