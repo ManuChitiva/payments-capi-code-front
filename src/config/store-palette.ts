@@ -1,8 +1,8 @@
 /**
  * Paleta de marca local — única fuente de verdad para los colores de identidad.
  *
- * Inspirada en el sistema visual de Apple: blanco y negro puros, azul eléctrico
- * como acento, sin tonos cálidos, sin dorados, sin mesh decorativos.
+ * Sistema: blanco y negro puros en superficies/texto, naranja industrial cálido
+ * como acento. El acento debe verse idéntico al togglear el tema (claro/oscuro).
  *
  * La API puede enviar un `primaryColor`, pero se IGNORA intencionalmente:
  * la marca es 100% local para que sea consistente, versionable y revisable
@@ -12,17 +12,14 @@
  *   1. Modifica los valores de este archivo.
  *   2. Verifica que `src/app/globals.css` tenga los mismos defaults
  *      (así el sitio se ve igual aunque el override inline no se aplique).
- *
- * Estos tokens son CONSTANTES entre el tema claro y el oscuro: la marca debe
- * verse idéntica al togglear el tema. Superficies, textos y fondos sí cambian.
  */
 export const storePalette = {
-  /** Color principal de marca. Azul tipo "link blue" (#0071e3). */
-  primary: "#0071e3",
+  /** Color principal de marca. Naranja industrial cálido. */
+  primary: "#f56b00",
   /** Hover del primary — un poco más oscuro. */
-  primaryHover: "#006edb",
+  primaryHover: "#de5e00",
   /** Color de badges y chips destacados. */
-  badge: "#0071e3",
+  badge: "#f56b00",
 } as const;
 
 export type StorePalette = typeof storePalette;

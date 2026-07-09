@@ -4,6 +4,7 @@ import { defaultStoreConfig } from "@/config/store-defaults";
 import type {
   ContactLine,
   PickupOption,
+  StoreAdvisor,
   StoreConfig,
   StoreProductVariant,
 } from "@/lib/store-types";
@@ -14,6 +15,11 @@ type StorePickupApi = {
   status: boolean;
 };
 
+/**
+ * Respuesta del endpoint `GET /stores/{slug}` (StoreDetail).
+ * Refleja los campos públicos que expone el backend, incluyendo
+ * redes sociales, descripción, horarios y métodos de pago.
+ */
 type StoreApiResponse = {
   id: number;
   name: string;
@@ -25,6 +31,15 @@ type StoreApiResponse = {
   address: string | null;
   logoUrl: string | null;
   primaryColor: string | null;
+  coverImageUrl: string | null;
+  description: string | null;
+  email: string | null;
+  website: string | null;
+  instagram: string | null;
+  facebook: string | null;
+  tiktok: string | null;
+  schedule: string | null;
+  paymentMethods: string | null;
   pickups: StorePickupApi[];
 };
 
@@ -54,6 +69,21 @@ type ProductApiResponse = {
   createdAt: string;
   /** Vitrina pública solo envía variantes activas (filtradas en backend) */
   variants?: ProductVariantApiResponse[];
+};
+
+/**
+ * Respuesta pública del endpoint `GET /stores/{slug}/personal`.
+ * Espejo del DTO Java `PersonalMemberResponse`: solo expone los campos
+ * visibles para que un cliente contacte al asesor.
+ */
+type AdvisorApiResponse = {
+  id: number;
+  name: string;
+  phone: string | null;
+  whatsapp: string | null;
+  photoUrl: string | null;
+  active: boolean;
+  sortOrder: number;
 };
 
 function withoutMockProducts(config: StoreConfig): StoreConfig {
@@ -209,6 +239,31 @@ function mapProducts(data: ProductApiResponse[]): StoreConfig["catalog"]["produc
     });
 }
 
+/**
+ * Mapea un asesor del backend al shape del storefront. Solo se exponen
+ * asesores activos. Si no hay foto, se usa un avatar neutro generado
+ * por seed (consistente para re-renders).
+ */
+function mapAdvisors(data: AdvisorApiResponse[]): StoreAdvisor[] {
+  const active = data.filter((item) => item.active);
+  return active
+    .map((item) => ({
+      sortOrder: Number(item.sortOrder ?? 0),
+      advisor: {
+        id: String(item.id),
+        name: item.name?.trim() || "Asesor",
+        photoSrc:
+          item.photoUrl?.trim() ||
+          `https://picsum.photos/seed/rs-asesor-api-${item.id}/240/240`,
+        photoAlt: `Foto de ${item.name}`,
+        whatsapp: item.whatsapp ?? undefined,
+        phone: item.phone ?? undefined,
+      },
+    }))
+    .sort((a, b) => a.sortOrder - b.sortOrder)
+    .map((entry) => entry.advisor);
+}
+
 export async function getStoreConfigFromApi(): Promise<StoreConfig> {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const slug = process.env.NEXT_PUBLIC_STORE_API_SLUG?.trim() || "01";
@@ -229,6 +284,7 @@ export async function getStoreConfigFromApi(): Promise<StoreConfig> {
 
     const data = (await res.json()) as StoreApiResponse;
     const productsEndpoint = `${sanitizedBaseUrl}/stores/${slug}/products`;
+    const advisorsEndpoint = `${sanitizedBaseUrl}/stores/${slug}/personal`;
 
     let catalogProducts: StoreConfig["catalog"]["products"] = [];
     try {
@@ -244,6 +300,25 @@ export async function getStoreConfigFromApi(): Promise<StoreConfig> {
       // Keep empty catalog if products endpoint fails.
     }
 
+    // Asesores: si el endpoint público responde 2xx, lo usamos (incluso si
+    // la lista viene vacía — el merchant podría no haber publicado ninguno).
+    // Si falla (404 hasta que se exponga el endpoint, error de red, etc.),
+    // caemos al seed de `defaultStoreConfig.advisors` para que el modal
+    // del slide "Asesoría" siga siendo funcional durante el desarrollo.
+    let advisors: StoreAdvisor[] | undefined;
+    try {
+      const advisorsRes = await fetch(advisorsEndpoint, {
+        method: "GET",
+        cache: "no-store",
+      });
+      if (advisorsRes.ok) {
+        const advisorsData = (await advisorsRes.json()) as AdvisorApiResponse[];
+        advisors = mapAdvisors(advisorsData);
+      }
+    } catch {
+      // Network error: keep `undefined` to trigger seed fallback below.
+    }
+
     return {
       ...defaultStoreConfig,
       storeId: data.id,
@@ -257,11 +332,26 @@ export async function getStoreConfigFromApi(): Promise<StoreConfig> {
       },
       contact: mapContact(data),
       pickup: mapPickup(data),
+      socials: {
+        instagram: data.instagram ?? null,
+        facebook: data.facebook ?? null,
+        tiktok: data.tiktok ?? null,
+        website: data.website ?? null,
+      },
+      profile: {
+        description: data.description ?? null,
+        email: data.email ?? null,
+        website: data.website ?? null,
+        schedule: data.schedule ?? null,
+        paymentMethods: data.paymentMethods ?? null,
+        coverImageUrl: data.coverImageUrl ?? null,
+      },
       theme: resolveTheme(),
       catalog: {
         ...defaultStoreConfig.catalog,
         products: catalogProducts,
       },
+      advisors: advisors ?? defaultStoreConfig.advisors ?? [],
     };
   } catch {
     return withoutMockProducts(defaultStoreConfig);
