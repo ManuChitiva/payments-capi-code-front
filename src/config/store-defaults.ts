@@ -14,7 +14,6 @@ export const defaultStoreConfig: StoreConfig = {
     { label: "Inicio", href: "/" },
     { label: "Catálogo", href: "#productos" },
     { label: "Asesoría", href: "#contacto", kind: "advisors" },
-    { label: "Blog", href: "#blog" },
   ],
   contact: {
     title: "Entra en contacto",
